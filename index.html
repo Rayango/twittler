@@ -3,25 +3,64 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <link rel='stylesheet' type='text/css' href='main.css'>
+    <title>Tweets</title>
   </head>
   <body>
+    <div id='container'>
+      <div id='header'>
+      </div>
+      <div id='content'>
+        <div id='nav'>
+          <ul>
+            <li><a href='index.html'>Home</a></li>
+            <li><a href=''>Following</a></li>
+            <li><a href=''>Followers</a></li>
+          </ul>  
+        </div>
+        <div id='main'>
+          <h2>Tweets</h2>
+          <div id='tweets'></div>
+        </div>
+      </div>
+      <div id='footer'>
+
+      </div>
+    </div>
+
+    <!-- jQuery code here -->
     <script>
-
       $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+        
+        function displayAllTweets() {
+          var $tweets = $('#tweets');
+          $tweets.html('');
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
+          var index = streams.home.length - 1;
+          while(index >= 0) {
+            var tweet = streams.home[index];
+            var $tweet = $('<table><tr class="dateTime"></tr><tr class="content"></tr><tr class="user"></tr></table>');
+            $('.user').html('<a href="">@' + tweet.user + '</a>');
+            $('.dateTime').text(tweet.created_at);
+            $('.content').text(tweet.message);
+
+            $tweet.appendTo($tweets);
+            index -= 1;
+          }
+        }  
+
+        $('.user').on('click', function() {
+          var userName = $(this).text();
+
+        });
+
+        function filterTweets(userName) {
+
         }
 
-      });
+        displayAllTweets();
 
+      });
     </script>
   </body>
 </html>

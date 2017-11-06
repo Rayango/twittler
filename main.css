@@ -1,0 +1,29 @@
+a {
+  text-decoration: none;
+}
+
+table {
+  width: 50%;
+  margin: 2%;	
+}
+
+tr {
+  padding-bottom: 10%;
+}
+
+.dateTime {
+  font-size: small;	
+}
+
+.content {
+  font-size: x-large;
+}
+
+.user {
+  font-size: medium;
+  font-weight: bold;
+}
+
+#nav ul {
+  list-style-type: none;
+}
