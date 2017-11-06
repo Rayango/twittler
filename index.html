@@ -20,7 +20,7 @@
         </div>
         <div id='main'>
           <h2>Tweets</h2>
-          <button id='showNewTweets'>You have new tweets!</button>
+          <button id='showNewTweets' class='noNewTweets'>You have new tweets!</button>
           <div id='newTweets'></div>
           <div id='tweets'></div>
         </div>
@@ -40,20 +40,23 @@
           var $newTweets = $('#newTweets');
           var $tweets = $('#tweets');
           var index = streams.home.length - 1;
+          var newestTweet = JSON.stringify(Object.assign({}, mostRecentTweet));
+          mostRecentTweet = streams.home[index];
 
-          while (JSON.stringify(streams.home[index]) !== JSON.stringify(mostRecentTweet)) {
+          while (JSON.stringify(streams.home[index]) !== newestTweet) {
             var tweet = streams.home[index];
             var $tweet = formatTweet(tweet);
             $tweet.appendTo($newTweets)
             index -=1;
           }
-
-          $newTweets.html().prependTo($tweets);
+          $tweets.prepend($newTweets.html());
           $newTweets.html('');
         }
 
         function checkForNewTweets() {
-          return (JSON.stringify(mostRecentTweet) !== JSON.stringify(streams.home[index - 1])) 
+          if (JSON.stringify(mostRecentTweet) !== JSON.stringify(streams.home[streams.home.length - 1])) {
+            $('#showNewTweets').removeClass('noNewTweets');
+          }
         }
 
         function displayAllTweets() {
@@ -84,7 +87,7 @@
         }
 
         function formatTweet(tweet) {
-          var $tweet = $('<table><tr class="dateTime"></tr><tr class="content"></tr><tr class="user"></tr></table>');
+          var $tweet = $('<div><p class="dateTime"></p><p class="content"></p><p class="user"></p></div>');
           $tweet.find('.user').html('<a href="#">@' + tweet.user + '</a>');
           $tweet.find('.dateTime').text(tweet.created_at);
           $tweet.find('.content').text(tweet.message);
@@ -98,6 +101,7 @@
 
         $('#showNewTweets').on('click', function() {
           displayNewTweets();
+          $('#showNewTweets').addClass('noNewTweets');
         });
 
         displayAllTweets();

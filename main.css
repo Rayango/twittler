@@ -2,13 +2,16 @@ a {
   text-decoration: none;
 }
 
-table {
-  width: 50%;
-  margin: 2%;	
+p {
+  margin: 0.5%;
 }
 
-tr {
-  padding-bottom: 10%;
+#newTweets {
+  display: none;
+}
+
+#tweets div {
+  margin-bottom: 3%;
 }
 
 .dateTime {
@@ -17,6 +20,10 @@ tr {
 
 .content {
   font-size: x-large;
+}
+
+.noNewTweets {
+  display: none;
 }
 
 .user {
