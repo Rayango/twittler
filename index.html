@@ -20,6 +20,8 @@
         </div>
         <div id='main'>
           <h2>Tweets</h2>
+          <button id='showNewTweets'>You have new tweets!</button>
+          <div id='newTweets'></div>
           <div id='tweets'></div>
         </div>
       </div>
@@ -32,12 +34,26 @@
     <script>
       $(document).ready(function(){
 
-        function formatTweet(tweet) {
-          var $tweet = $('<table><tr class="dateTime"></tr><tr class="content"></tr><tr class="user"></tr></table>');
-          $tweet.find('.user').html('<a href="#">@' + tweet.user + '</a>');
-          $tweet.find('.dateTime').text(tweet.created_at);
-          $tweet.find('.content').text(tweet.message);
-          return $tweet;
+        var mostRecentTweet = {};
+
+        function displayNewTweets() {
+          var $newTweets = $('#newTweets');
+          var $tweets = $('#tweets');
+          var index = streams.home.length - 1;
+
+          while (JSON.stringify(streams.home[index]) !== JSON.stringify(mostRecentTweet)) {
+            var tweet = streams.home[index];
+            var $tweet = formatTweet(tweet);
+            $tweet.appendTo($newTweets)
+            index -=1;
+          }
+
+          $newTweets.html().prependTo($tweets);
+          $newTweets.html('');
+        }
+
+        function checkForNewTweets() {
+          return (JSON.stringify(mostRecentTweet) !== JSON.stringify(streams.home[index - 1])) 
         }
 
         function displayAllTweets() {
@@ -45,6 +61,7 @@
           $tweets.html('');
 
           var index = streams.home.length - 1;
+          mostRecentTweet = streams.home[index];
           while(index >= 0) {
             var tweet = streams.home[index];
             var $tweet = formatTweet(tweet);
@@ -66,12 +83,25 @@
           }
         }
 
+        function formatTweet(tweet) {
+          var $tweet = $('<table><tr class="dateTime"></tr><tr class="content"></tr><tr class="user"></tr></table>');
+          $tweet.find('.user').html('<a href="#">@' + tweet.user + '</a>');
+          $tweet.find('.dateTime').text(tweet.created_at);
+          $tweet.find('.content').text(tweet.message);
+          return $tweet;
+        }
+
         $('#tweets').on('click', '.user',function() {
           var userName = $(this).text().substr(1);
           displayFilteredTweets(userName);
         });
 
+        $('#showNewTweets').on('click', function() {
+          displayNewTweets();
+        });
+
         displayAllTweets();
+        setInterval(checkForNewTweets, 5000);
 
       });
     </script>
