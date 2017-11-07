@@ -8,25 +8,22 @@
   </head>
   <body>
     <div id='container'>
-      <div id='header'>
-      </div>
       <div id='content'>
         <div id='nav'>
-          <ul>
+<!--           <ul>
             <li><a href=''>Home</a></li>
             <li><a href=''>Following</a></li>
             <li><a href=''>Followers</a></li>
-          </ul>  
+          </ul>   -->
         </div>
         <div id='main'>
-          <h2>Tweets</h2>
+          <h1><a href=''>Tweets</a></h1>
           <button id='showNewTweets' class='noNewTweets'>You have new tweets!</button>
           <div id='newTweets'></div>
           <div id='tweets'></div>
         </div>
       </div>
       <div id='footer'>
-
       </div>
     </div>
 
@@ -35,23 +32,6 @@
       $(document).ready(function(){
 
         var mostRecentTweet = {};
-
-        function displayNewTweets() {
-          var $newTweets = $('#newTweets');
-          var $tweets = $('#tweets');
-          var index = streams.home.length - 1;
-          var newestTweet = JSON.stringify(Object.assign({}, mostRecentTweet));
-          mostRecentTweet = streams.home[index];
-
-          while (JSON.stringify(streams.home[index]) !== newestTweet) {
-            var tweet = streams.home[index];
-            var $tweet = formatTweet(tweet);
-            $tweet.appendTo($newTweets)
-            index -=1;
-          }
-          $tweets.prepend($newTweets.html());
-          $newTweets.html('');
-        }
 
         function checkForNewTweets() {
           if (JSON.stringify(mostRecentTweet) !== JSON.stringify(streams.home[streams.home.length - 1])) {
@@ -67,7 +47,7 @@
           mostRecentTweet = streams.home[index];
           while(index >= 0) {
             var tweet = streams.home[index];
-            var $tweet = formatTweet(tweet);
+            var $tweet = formatTweet(tweet, index);
             $tweet.appendTo($tweets);
             index -= 1;
           }
@@ -80,17 +60,35 @@
           var index = streams.users[userName].length - 1;
           while(index >= 0) {
             var tweet = streams.users[userName][index];
-            var $tweet = formatTweet(tweet);
+            var $tweet = formatTweet(tweet, index);
             $tweet.appendTo($tweets);
             index -= 1;
           }
         }
 
-        function formatTweet(tweet) {
+        function displayNewTweets() {
+          var $newTweets = $('#newTweets');
+          var $tweets = $('#tweets');
+          var index = streams.home.length - 1;
+          var newestTweet = JSON.stringify(Object.assign({}, mostRecentTweet));
+          mostRecentTweet = streams.home[index];
+
+          while (JSON.stringify(streams.home[index]) !== newestTweet) {
+            var tweet = streams.home[index];
+            var $tweet = formatTweet(tweet, index);
+            $tweet.appendTo($newTweets)
+            index -=1;
+          }
+          $tweets.prepend($newTweets.html());
+          $newTweets.html('');
+        }
+
+        function formatTweet(tweet, index) {
           var $tweet = $('<div><p class="dateTime"></p><p class="content"></p><p class="user"></p></div>');
           $tweet.find('.user').html('<a href="#">@' + tweet.user + '</a>');
           $tweet.find('.dateTime').text(tweet.created_at);
           $tweet.find('.content').text(tweet.message);
+          index % 2 === 0 ? $tweet.addClass('even') : $tweet.addClass('odd');
           return $tweet;
         }
 
@@ -105,7 +103,7 @@
         });
 
         displayAllTweets();
-        setInterval(checkForNewTweets, 5000);
+        setInterval(checkForNewTweets, 1000);
 
       });
     </script>

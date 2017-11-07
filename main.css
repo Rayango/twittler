@@ -2,24 +2,52 @@ a {
   text-decoration: none;
 }
 
+h1 {
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
+}
+
 p {
   margin: 0.5%;
+}
+
+#container {
+  width: 800px;
+  margin: auto;
+}
+
+#nav ul {
+  list-style-type: none;
 }
 
 #newTweets {
   display: none;
 }
 
+#showNewTweets {	
+  background-color: white;
+  border: 2px solid grey;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
 #tweets div {
-  margin-bottom: 3%;
+  border: 1px solid grey;
+}
+
+.content {
+  font-size: x-large;
 }
 
 .dateTime {
   font-size: small;	
 }
 
-.content {
-  font-size: x-large;
+.even {
+  background-color: #C0E8FB;
 }
 
 .noNewTweets {
@@ -29,8 +57,4 @@ p {
 .user {
   font-size: medium;
   font-weight: bold;
-}
-
-#nav ul {
-  list-style-type: none;
 }
